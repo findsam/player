@@ -27,6 +27,6 @@ func (db *DB) Start() (*pgx.Conn, error) {
 }
 
 func (db *DB) Migrate() error {
-    fmt.Println("implement migrate functionality")
-    return nil
+	fmt.Println("implement migrate functionality")
+	return nil
 }

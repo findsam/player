@@ -19,6 +19,7 @@ func Execute() error {
 	if err != nil {
 		return fmt.Errorf("failed to start DB: %w", err)
 	}
+
 	defer func() {
 		if err := conn.Close(context.Background()); err != nil {
 			log.Printf("failed to close DB connection: %v", err)
