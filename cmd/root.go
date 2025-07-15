@@ -17,7 +17,7 @@ func Execute() error {
 		return fmt.Errorf("failed to get token: %w", err)
 	}
 	
-	h := handler.NewHandler(t, c)
+	h := handler.NewHandler(t)
 	r := render.NewRender(h)
 	
 	if err := r.List(); err != nil {

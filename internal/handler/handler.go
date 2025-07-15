@@ -14,10 +14,10 @@ type Handler struct {
 	Client *resty.Client
 }
 
-func NewHandler(t *pkg.Token, c *resty.Client) *Handler {
+func NewHandler(t *pkg.Token) *Handler {
 	return &Handler{
 		AccessToken: t.AccessToken,
-		Client: c,
+		Client: t.Client,
 	}
 }
 func (h *Handler) GetLeaderboard() (*pkg.PvPLeaderboard, error) {
