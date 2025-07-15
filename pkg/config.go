@@ -7,8 +7,11 @@ import (
 )
 
 type Config struct {
-	BLIZZARD_CLIENT_SECRET string
-	BLIZZARD_CLIENT_ID     string
+	BLIZZARD_CLIENT_SECRET,
+	BLIZZARD_CLIENT_ID,
+	DB_PWD,
+	DB_USER,
+	DB_NAME string
 }
 
 var Envs = config()
@@ -17,6 +20,9 @@ func config() *Config {
 	return &Config{
 		BLIZZARD_CLIENT_SECRET: getEnv("BLIZZARD_CLIENT_SECRET", ""),
 		BLIZZARD_CLIENT_ID:     getEnv("BLIZZARD_CLIENT_ID", ""),
+		DB_PWD: getEnv("DB_PWD", ""),
+		DB_USER: getEnv("DB_USER", ""),
+		DB_NAME: getEnv("DB_NAME", ""),
 	}
 }
 
