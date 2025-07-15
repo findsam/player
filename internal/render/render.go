@@ -23,10 +23,11 @@ func (r *Render) List() error {
 	}
 
 	const batchSize = 5
-	entries := res.Entries[:25]
+	entries := res.Entries[:50]
+	eChan := make(chan error, len(entries))
 
 	for start := 0; start < len(entries); start += batchSize {
-		end := min(start + batchSize, len(entries))
+		end := min(start+batchSize, len(entries))
 
 		batch := entries[start:end]
 		var wg sync.WaitGroup
@@ -38,15 +39,14 @@ func (r *Render) List() error {
 				defer wg.Done()
 				resp, err := r.Handler.GetPlayer(p.Character.Realm.Slug, p.Character.Name)
 
-				if err != nil { 
-					fmt.Println(err)
+				if err != nil {
+					eChan <- fmt.Errorf("error fetching %s's dynamic details", p.Character.Name)
 				}
 
 				p.CharacterResponse = resp
 				list[i] = p
 			}(i, player)
 		}
-
 		wg.Wait()
 		copy(entries[start:end], list)
 
@@ -56,5 +56,10 @@ func (r *Render) List() error {
 		}
 	}
 
+	close(eChan)
+
+	for err := range eChan {
+		fmt.Println(err)
+	}
 	return nil
 }

@@ -5,7 +5,6 @@ import (
 	"strings"
 )
 
-// Color constants for better maintainability
 const (
 	ColorReset   = "\033[0m"
 	ColorRed     = "\033[31m"
@@ -37,7 +36,6 @@ func (p *PvPEntry) Render() {
 	parts = append(parts, fmt.Sprintf("%-22s", p.FactionNameColor()))
 
 	parts = append(parts, fmt.Sprintf("%-15s", p.SeasonMatchStatistics.Winrate()))
-
 
 	if p.CharacterResponse != nil {
 		parts = append(parts, fmt.Sprintf(" %-15s",
@@ -111,17 +109,17 @@ type CharacterResponse struct {
 }
 
 var classColors = map[int]string{
-	1:  "\033[38;5;130m", // Warrior - Brown
-	2:  ColorMagenta,     // Paladin - Magenta
-	3:  ColorGreen,       // Hunter - Green
-	4:  ColorYellow,      // Rogue - Yellow
-	5:  ColorWhite,       // Priest - White
-	6:  ColorRed,         // Death Knight - Red
-	7:  ColorBlue,        // Shaman - Blue
-	8:  ColorCyan,        // Mage - Cyan
-	9:  "\033[38;5;129m", // Warlock - Purple
-	10: ColorGreen,       // Monk - Green
-	11: "\033[38;5;208m", // Druid - Orange
-	12: ColorPurple,      // Demon Hunter - Purple
-	13: "\033[38;5;82m",  // Evoker - Light Green
+	1:  "\033[38;5;130m",
+	2:  ColorMagenta,
+	3:  ColorGreen,
+	4:  ColorYellow,
+	5:  ColorWhite,
+	6:  ColorRed,
+	7:  ColorBlue,
+	8:  ColorCyan,
+	9:  "\033[38;5;129m",
+	10: ColorGreen,
+	11: "\033[38;5;208m",
+	12: ColorPurple,
+	13: "\033[38;5;82m",
 }

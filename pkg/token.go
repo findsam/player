@@ -8,7 +8,7 @@ import (
 
 type Token struct {
 	AccessToken string `json:"access_token"`
-	Client *resty.Client
+	Client      *resty.Client
 }
 
 func NewToken(c *resty.Client) *Token {

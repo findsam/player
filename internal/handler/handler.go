@@ -11,13 +11,13 @@ import (
 
 type Handler struct {
 	AccessToken string
-	Client *resty.Client
+	Client      *resty.Client
 }
 
 func NewHandler(t *pkg.Token) *Handler {
 	return &Handler{
 		AccessToken: t.AccessToken,
-		Client: t.Client,
+		Client:      t.Client,
 	}
 }
 func (h *Handler) GetLeaderboard() (*pkg.PvPLeaderboard, error) {
@@ -28,7 +28,6 @@ func (h *Handler) GetLeaderboard() (*pkg.PvPLeaderboard, error) {
 		SetHeader("Authorization", fmt.Sprintf("Bearer %s", h.AccessToken)).
 		SetResult(result).
 		Get("https://us.api.blizzard.com/data/wow/pvp-season/39/pvp-leaderboard/3v3?namespace=dynamic-us&locale=en_US")
-
 	stop()
 
 	if err != nil {
