@@ -8,12 +8,12 @@ import (
 )
 
 type DB struct {
-	uri string	
+	uri string
 }
 
 func NewDB(user, password, name string) *DB {
 	return &DB{
-		uri:  fmt.Sprintf("postgres://%s:%s@localhost:5432/%s", user, password, name),
+		uri: fmt.Sprintf("postgres://%s:%s@localhost:5432/%s", user, password, name),
 	}
 }
 
@@ -22,7 +22,7 @@ func (db *DB) Start() (*pgx.Conn, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	defer conn.Close(context.Background())
 	return conn, nil
 }
