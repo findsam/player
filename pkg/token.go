@@ -2,24 +2,23 @@ package pkg
 
 import (
 	"fmt"
-	"time"
 
 	"resty.dev/v3"
 )
 
 type Token struct {
 	AccessToken string `json:"access_token"`
+	Client *resty.Client
 }
 
-func NewToken() *Token {
-	return &Token{}
+func NewToken(c *resty.Client) *Token {
+	return &Token{
+		Client: c,
+	}
 }
 
 func (t *Token) Get() error {
-	client := resty.New().
-		SetTimeout(30 * time.Second)
-
-	resp, err := client.R().
+	resp, err := t.Client.R().
 		SetFormData(map[string]string{
 			"grant_type": "client_credentials",
 		}).
