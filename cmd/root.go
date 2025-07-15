@@ -1,9 +1,7 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/findsam/tbot/internal/handler"
@@ -14,20 +12,10 @@ import (
 
 func Execute() error {
 	db := pkg.NewDB(pkg.Envs.DB_USER, pkg.Envs.DB_PWD, pkg.Envs.DB_NAME)
+	_, err := db.Start()
 
-	conn, err := db.Start()
 	if err != nil {
-		return fmt.Errorf("failed to start DB: %w", err)
-	}
-
-	defer func() {
-		if err := conn.Close(context.Background()); err != nil {
-			log.Printf("failed to close DB connection: %v", err)
-		}
-	}()
-
-	if err := db.Migrate(); err != nil {
-		return fmt.Errorf("failed to migrate DB: %w", err)
+		return fmt.Errorf("db err")
 	}
 
 	c := resty.New().SetTimeout(30 * time.Second)

@@ -1,32 +1,38 @@
 package pkg
 
 import (
-	"context"
 	"fmt"
 
-	"github.com/jackc/pgx/v5"
+	"github.com/findsam/tbot/internal/models"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type DB struct {
-	uri string
+	user, password, name string
 }
 
 func NewDB(user, password, name string) *DB {
-	return &DB{
-		uri: fmt.Sprintf("postgres://%s:%s@localhost:5432/%s", user, password, name),
+	return &DB{	
+		user: user,
+		password: password,
+		name: name,
 	}
 }
 
-func (db *DB) Start() (*pgx.Conn, error) {
-	conn, err := pgx.Connect(context.Background(), db.uri)
-	if err != nil {
-		return nil, err
-	}
+func (db *DB) Start() (*gorm.DB, error) {
+    dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%v sslmode=disable",
+        "localhost", db.user, db.password, db.name, 5432)
 
-	return conn, nil
-}
+    conn, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+    if err != nil {
+        return nil, err
+    }
 
-func (db *DB) Migrate() error {
-	fmt.Println("implement migrate functionality")
-	return nil
+    err = conn.AutoMigrate(&models.User{})
+    if err != nil {
+        panic("failed to migrate database: " + err.Error())
+    }
+
+    return conn, nil
 }
