@@ -1,3 +1,5 @@
+Lightweight CLI tool for retrieving real-time player data in World of Warcraft.
+
 - `/cmd` - root entry point
 - `/internal/handler` - handlers and business logic
 - `/internal/render` - cli render controller
