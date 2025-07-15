@@ -5,4 +5,4 @@ Lightweight CLI tool for retrieving real-time player data in World of Warcraft.
 - `/internal/render` - cli render controller
 - `/pkg` - utility, types, config
 
-![img](https://i.imgur.com/W3rqA2h.png)
+![img](https://i.imgur.com/s4tw60K.png)
