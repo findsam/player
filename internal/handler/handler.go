@@ -11,43 +11,20 @@ import (
 
 type Handler struct {
 	AccessToken string
+	Client *resty.Client
 }
 
-func NewHandler(t *pkg.Token) *Handler {
+func NewHandler(t *pkg.Token, c *resty.Client) *Handler {
 	return &Handler{
 		AccessToken: t.AccessToken,
+		Client: c,
 	}
 }
-func StartSpinner() (stop func()) {
-	done := make(chan struct{})
-	go func() {
-		frames := []string{"|", "/", "-", "\\"}
-		i := 0
-		ticker := time.NewTicker(250 * time.Millisecond)
-		defer ticker.Stop()
-
-		for {
-			select {
-			case <-done:
-				return
-			case <-ticker.C:
-				fmt.Printf("\r%s", frames[i%len(frames)])
-				i++
-			}
-		}
-	}()
-	return func() {
-		close(done)
-		fmt.Print("\r\033[K")
-	}
-}
-
 func (h *Handler) GetLeaderboard() (*pkg.PvPLeaderboard, error) {
-	client := resty.New().SetTimeout(30 * time.Second)
 	result := &pkg.PvPLeaderboard{}
-	stop := StartSpinner()
+	stop := pkg.StartSpinner()
 
-	resp, err := client.R().
+	resp, err := h.Client.R().
 		SetHeader("Authorization", fmt.Sprintf("Bearer %s", h.AccessToken)).
 		SetResult(result).
 		Get("https://us.api.blizzard.com/data/wow/pvp-season/39/pvp-leaderboard/3v3?namespace=dynamic-us&locale=en_US")

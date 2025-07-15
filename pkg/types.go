@@ -38,12 +38,11 @@ func (p *PvPEntry) Render() {
 
 	parts = append(parts, fmt.Sprintf("%-15s", p.SeasonMatchStatistics.Winrate()))
 
+
 	if p.CharacterResponse != nil {
-		parts = append(parts, fmt.Sprintf("  %-15s %-18s",
-			p.CharacterResponse.ClassSpecColor(),
-			p.Race.Name))
+		parts = append(parts, fmt.Sprintf(" %-15s",
+			p.CharacterResponse.ClassSpecColor()))
 	}
-	
 	fmt.Println(strings.Join(parts, ""))
 }
 
@@ -84,7 +83,6 @@ func (c *CharacterResponse) ClassSpecColor() string {
 	if !exists {
 		return fmt.Sprintf("%-25s", c.ActiveSpec.Name+" "+c.CharacterClass.Name)
 	}
-
 	classSpec := c.ActiveSpec.Name + " " + c.CharacterClass.Name
 	return fmt.Sprintf("%s%-20s%s", color, classSpec, ColorReset)
 }

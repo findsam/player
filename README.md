@@ -1,5 +1,3 @@
-#### Structure:
-
 - `/cmd` - root entry point
 - `/internal/handler` - handlers and business logic
 - `/internal/render` - cli render controller

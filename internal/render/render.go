@@ -22,23 +22,15 @@ func (r *Render) List() error {
 		return fmt.Errorf("failed to get leaderboard: %w", err)
 	}
 
-	entries := res.Entries
-	if len(entries) > 25 {
-		entries = entries[:25]
-	}
-
-	return r.upsertPlayers(entries)
-}
-
-func (r *Render) upsertPlayers(entries []pkg.PvPEntry) error {
 	const batchSize = 5
+	entries := res.Entries[:25]
 
 	for start := 0; start < len(entries); start += batchSize {
 		end := min(start + batchSize, len(entries))
 
 		batch := entries[start:end]
 		var wg sync.WaitGroup
-		updatedBatch := make([]pkg.PvPEntry, len(batch))
+		list := make([]pkg.PvPEntry, len(batch))
 
 		for i, player := range batch {
 			wg.Add(1)
@@ -49,23 +41,20 @@ func (r *Render) upsertPlayers(entries []pkg.PvPEntry) error {
 				if err != nil { 
 					fmt.Println(err)
 				}
-				
+
 				p.CharacterResponse = resp
-				updatedBatch[i] = p
+				list[i] = p
 			}(i, player)
 		}
 
 		wg.Wait()
-		copy(entries[start:end], updatedBatch)
-		r.renderList(entries)
+		copy(entries[start:end], list)
+
+		fmt.Print("\033[2J\033[H")
+		for _, player := range entries {
+			player.Render()
+		}
 	}
 
 	return nil
-}
-
-func (r *Render) renderList(entries []pkg.PvPEntry) {
-	fmt.Print("\033[2J\033[H")
-	for _, player := range entries {
-		player.Render()
-	}
 }
