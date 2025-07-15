@@ -3,7 +3,6 @@ package pkg
 import (
 	"fmt"
 
-	"github.com/findsam/tbot/internal/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -29,7 +28,7 @@ func (db *DB) Start() (*gorm.DB, error) {
         return nil, err
     }
 
-    err = conn.AutoMigrate(&models.User{})
+    err = conn.AutoMigrate(&Leaderboard{})
     if err != nil {
         panic("failed to migrate database: " + err.Error())
     }

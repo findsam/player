@@ -20,6 +20,7 @@ func NewHandler(t *pkg.Token) *Handler {
 		Client:      t.Client,
 	}
 }
+
 func (h *Handler) GetLeaderboard() (*pkg.PvPLeaderboard, error) {
 	result := &pkg.PvPLeaderboard{}
 	stop := pkg.StartSpinner()

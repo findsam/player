@@ -11,8 +11,7 @@ import (
 )
 
 func Execute() error {
-	db := pkg.NewDB(pkg.Envs.DB_USER, pkg.Envs.DB_PWD, pkg.Envs.DB_NAME)
-	_, err := db.Start()
+	_, err := pkg.NewDB(pkg.Envs.DB_USER, pkg.Envs.DB_PWD, pkg.Envs.DB_NAME).Start()
 
 	if err != nil {
 		return fmt.Errorf("db err")
