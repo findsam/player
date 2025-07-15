@@ -23,6 +23,10 @@ func (db *DB) Start() (*pgx.Conn, error) {
 		return nil, err
 	}
 
-	defer conn.Close(context.Background())
 	return conn, nil
+}
+
+func (db *DB) Migrate() error {
+    fmt.Println("implement migrate functionality")
+    return nil
 }
