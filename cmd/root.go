@@ -6,29 +6,32 @@ import (
 
 	"github.com/findsam/tbot/internal/handler"
 	"github.com/findsam/tbot/internal/render"
+	"github.com/findsam/tbot/internal/repo"
 	"github.com/findsam/tbot/pkg"
 	"resty.dev/v3"
 )
 
 func Execute() error {
-	_, err := pkg.NewDB(pkg.Envs.DB_USER, pkg.Envs.DB_PWD, pkg.Envs.DB_NAME).Start()
+	db, err := repo.NewDB(pkg.Envs.DB_USER, pkg.Envs.DB_PWD, pkg.Envs.DB_NAME).Start()
 
 	if err != nil {
 		return fmt.Errorf("db err")
 	}
 
+	r := repo.NewRepo(db)
 	c := resty.New().SetTimeout(30 * time.Second)
+
 	t := pkg.NewToken(c)
 	if err := t.Get(); err != nil {
 		return fmt.Errorf("failed to get token: %w", err)
 	}
 
 	h := handler.NewHandler(t)
-	r := render.NewRender(h)
-
-	if err := r.List(); err != nil {
+	rn := render.NewRender(h, r)
+	if err := rn.List(); err != nil {
 		return fmt.Errorf("failed to list: %w", err)
 	}
 
+	rn.GetList()
 	return nil
 }
